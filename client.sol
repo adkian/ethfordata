@@ -2,11 +2,12 @@ pragma solidity ^0.4.13;
 
 contract Client {
    
-  public string lat;
-  public string long;
-  public string time;
-  public uint ID;
+  string public lat;
+  string public long;
+  string public timel;
+  uint public ID;
   address owner;
+  
   //the address below would be used by this contract to transact with the master contract
   address public master_address;
   
@@ -33,17 +34,16 @@ contract Client {
 
   
   
-  function forawardLoc(string lat, string long, string time) onlyClient returns (bool){
+  function forawardLoc(string lat, string long, string time) external returns (bool){
 
     this.lat = lat;
     this.long = long;
     this.time = time;      
     
-    IncomingData(msg.sender, _time, _lat, _long);
+    IncomingData(msg.sender, time, lat, long);
     
     master_address.getData(ID, time, lat, long);
     return true;
-  }  
-  
+  }    
 }
 
