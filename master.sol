@@ -99,33 +99,6 @@ contract Master is ClientInterface, FunderInterface{
     return true;      
   }
 
-  //TODO: test this chunk of code before testrpc deployment
-  /* format data */
-  function strConcat(string base, string user_id, string timestamp, string lat, string long, string newlinechar) internal returns (string){
-    
-    bytes memory _base = bytes(base);
-    bytes memory _ba = bytes(user_id);
-    bytes memory _bb = bytes(timestamp);
-    bytes memory _bc = bytes(lat);
-    bytes memory _bd = bytes(long);
-    bytes memory _newlinechar = bytes(newlinechar);
-     
-    string memory formatted_data_point = new string(_base.length +_ba.length + _bb.length + _bc.length + _bd.length + _newlinechar.length);
-    
-    bytes memory data = bytes(formatted_data_point);
-    
-    uint k = 0;
-    for (uint i = 0; i < _base.length; i++) data[k++] = _base[i];
-    for (uint i2 = 0; i2 < _ba.length; i2++) data[k++] = _ba[i2];
-    for (uint i3 = 0; i3 < _bb.length; i3++) data[k++] = _bb[i3];
-    for (uint i4 = 0; i4 < _bc.length; i4++) data[k++] = _bc[i4];
-    for (uint i5 = 0; i5 < _bd.length; i5++) data[k++] = _bd[i5];
-    for (uint i6 = 0; i6 < _newlinechar.length; i6++) data[k++] = _newlinechar[i6];
-
-    return string(data);
-  }
-
-
   /* function that sends data and payment to relevant parties */
   function payout() returns (bool){
     //format data
@@ -164,6 +137,28 @@ contract Master is ClientInterface, FunderInterface{
     }
   }
   
+  //========================String operations=================================
+    //TODO: test this chunk of code before testrpc deployment
+  /* format data */
+  function strConcat(string base, string user_id, string timestamp, string lat, string long, string newlinechar) internal returns (string){
+
+ 
+     
+    string memory formatted_data_point = new string(bytes(base).length +bytes(user_id).length + bytes(timestamp).length + bytes(lat).length + bytes(long).length + bytes(newlinechar).length);
+    
+    bytes memory data = bytes(formatted_data_point);
+    
+    uint k = 0;
+    for (uint i = 0; i < bytes(base).length; i++) data[k++] = bytes(base)[i];
+    for (i = 0; i < bytes(user_id).length; i++) data[k++] = bytes(user_id)[i];
+    for (i = 0; i < bytes(timestamp).length; i++) data[k++] = bytes(timestamp)[i];
+    for (i = 0; i < bytes(lat).length; i++) data[k++] = bytes(lat)[i];
+    for (i = 0; i < bytes(long).length; i++) data[k++] = bytes(long)[i];
+    for (i = 0; i <bytes(newlinechar).length; i++) data[k++] = bytes(newlinechar)[i];
+
+    return string(data);
+  }
+  
   function uintToString(uint v) constant returns (string str) {
     uint maxlength = 100;
     bytes memory reversed = new bytes(maxlength);
@@ -180,7 +175,6 @@ contract Master is ClientInterface, FunderInterface{
     str = string(s);
   }
 
-  /* ... */
   function getCoordString(int coord) returns (string){
     string neg;
     if(coord<0){
@@ -192,7 +186,6 @@ contract Master is ClientInterface, FunderInterface{
     }
   }
   
-  /* O_O */
   function getNegCoordString(string base, string user_id) internal returns (string){
     
     bytes memory _base = bytes(base);
