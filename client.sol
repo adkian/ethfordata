@@ -26,6 +26,7 @@ contract Client {
 
   function Client(){
     owner = msg.sender;
+    
     //this transaction should act as registration with the master contract
     ID =  master_address.getID();
   }
