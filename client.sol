@@ -1,11 +1,17 @@
 pragma solidity ^0.4.13;
 
-contract Client {
+contract MasterInterface{
+  function getID() returns (uint) {}
+  function getData(uint, uint, int, int) {}
+}
+
+contract Client is MasterInterface{
    
-  string public lat;
-  string public long;
-  string public timel;
+  int lat;
+  int long;
+  uint time;
   uint public ID;
+  MasterInterface m;
   address owner;
   
   //the address below would be used by this contract to transact with the master contract
@@ -13,9 +19,9 @@ contract Client {
   
   event IncomingData(
 		     address client,
-		     string time,
-		     string lat,
-		     string long
+		     uint time,
+		     int lat,
+		     int long
 		     );
 
   modifier onlyClient(){
@@ -29,20 +35,21 @@ contract Client {
     owner = msg.sender;
     
     //this transaction should act as registration with the master contract
-    ID =  master_address.getID();
+    m = MasterInterface(master_address);
+    ID =  m.getID();
   }
 
   
   
-  function forawardLoc(string lat, string long, string time) external returns (bool){
+  function forawardLoc(int _lat, int _long, uint _time) external returns (bool){
 
-    this.lat = lat;
-    this.long = long;
-    this.time = time;      
+    lat = _lat;
+    long = _long;
+    time = _time;      
     
     IncomingData(msg.sender, time, lat, long);
     
-    master_address.getData(ID, time, lat, long);
+    m.getData(ID, time, lat, long);
     return true;
   }    
 }
